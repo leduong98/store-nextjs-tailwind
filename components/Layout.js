@@ -1,23 +1,23 @@
-import { useSession, signIn, signOut } from "next-auth/react"
-import Nav from "@/components/Nav";
+import { useSession, signIn } from "next-auth/react"
+import Nav from "components/Nav";
 import {useState} from "react";
-import Logo from "@/components/Logo";
+import Logo from "components/Logo";
 
 export default function Layout({children}) {
   const [showNav,setShowNav] = useState(false);
   const { data: session } = useSession();
   if (!session) {
     return (
-      <div className="bg-bgGray w-screen h-screen flex items-center">
+      <div className="bg-indigo-200 w-screen h-screen flex items-center">
         <div className="text-center w-full">
-          <button onClick={() => signIn('google')} className="bg-white p-2 px-4 rounded-lg">Login with Google</button>
+          <button onClick={() => signIn('google')} className="bg-white p-2 px-4 rounded-lg border border-purple-600">Login with Google</button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-bgGray min-h-screen ">
+    <div className="bg-purple-50 min-h-screen ">
       <div className="block md:hidden flex items-center p-4">
         <button onClick={() => setShowNav(true)}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">

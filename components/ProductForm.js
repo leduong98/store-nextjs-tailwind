@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import axios from "axios";
-import Spinner from "@/components/Spinner";
+import Spinner from "components/Spinner";
 import {ReactSortable} from "react-sortablejs";
 
 export default function ProductForm({
@@ -87,12 +87,14 @@ export default function ProductForm({
     <form onSubmit={saveProduct}>
       <label>Product name</label>
       <input
+        className="border border-purple-300"
         type="text"
         placeholder="product name"
         value={title}
         onChange={ev => setTitle(ev.target.value)}/>
       <label>Category</label>
       <select value={category}
+              className="border border-purple-300"
               onChange={ev => setCategory(ev.target.value)}>
         <option value="">Uncategorized</option>
         {categories.length > 0 && categories.map(c => (
@@ -146,15 +148,17 @@ export default function ProductForm({
       </div>
       <label>Description</label>
       <textarea
+        className="border border-purple-300"
         placeholder="description"
         value={description}
         onChange={ev => setDescription(ev.target.value)}
       />
       <label>Price (in USD)</label>
       <input
+        className="border border-purple-300"
         type="number" placeholder="price"
         value={price}
-        onChange={ev => setPrice(ev.target.value)}
+        onChange={ev => setPrice(ev.target.value)}s
       />
       <button
         type="submit"

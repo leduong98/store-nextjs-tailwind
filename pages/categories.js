@@ -1,4 +1,4 @@
-import Layout from "@/components/Layout";
+import Layout from "components/Layout";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import { withSwal } from 'react-sweetalert2';
@@ -104,11 +104,13 @@ function Categories({swal}) {
       <form onSubmit={saveCategory}>
         <div className="flex gap-1">
           <input
+            className="border border-purple-300"
             type="text"
             placeholder={'Category name'}
             onChange={ev => setName(ev.target.value)}
             value={name}/>
           <select
+            className="border border-purple-300"
             onChange={ev => setParentCategory(ev.target.value)}
             value={parentCategory}>
             <option value="">No parent category</option>
@@ -126,11 +128,13 @@ function Categories({swal}) {
             Add new property
           </button>
           {properties.length > 0 && properties.map((property,index) => (
-            <div key={property.name} className="flex gap-1 mb-2">
+            <div key={index} className="flex gap-1 mb-2">
               <input type="text"
-                     value={property.name}
                      className="mb-0"
-                     onChange={ev => handlePropertyNameChange(index,property,ev.target.value)}
+                     onChange={ev =>
+                       handlePropertyNameChange(index,property,ev.target.value
+                       )}
+                     value={property.name}
                      placeholder="property name (example: color)"/>
               <input type="text"
                      className="mb-0"
@@ -174,7 +178,7 @@ function Categories({swal}) {
           <tr>
             <td>Category name</td>
             <td>Parent category</td>
-            <td></td>
+            <td className="text-center">Action</td>
           </tr>
           </thead>
           <tbody>
@@ -182,7 +186,7 @@ function Categories({swal}) {
             <tr key={category._id}>
               <td>{category.name}</td>
               <td>{category?.parent?.name}</td>
-              <td>
+              <td className="text-right">
                 <button
                   onClick={() => editCategory(category)}
                   className="btn-default mr-1"

@@ -1,6 +1,7 @@
-import {Product} from "@/models/Product";
-import {mongooseConnect} from "@/lib/mongoose";
-import {isAdminRequest} from "@/pages/api/auth/[...nextauth]";
+import {Category} from "models/Category";
+import {mongooseConnect} from "lib/mongoose";
+import {getServerSession} from "next-auth";
+import {authOptions, isAdminRequest} from "pages/api/auth/[...nextauth]";
 
 export default async function handle(req, res) {
   const {method} = req;
@@ -8,31 +9,32 @@ export default async function handle(req, res) {
   await isAdminRequest(req,res);
 
   if (method === 'GET') {
-    if (req.query?.id) {
-      res.json(await Product.findOne({_id:req.query.id}));
-    } else {
-      res.json(await Product.find());
-    }
+    res.json(await Category.find().populate('parent'));
   }
 
   if (method === 'POST') {
-    const {title,description,price,images,category,properties} = req.body;
-    const productDoc = await Product.create({
-      title,description,price,images,category,properties,
-    })
-    res.json(productDoc);
+    const {name,parentCategory,properties} = req.body;
+    const categoryDoc = await Category.create({
+      name,
+      parent: parentCategory || undefined,
+      properties,
+    });
+    res.json(categoryDoc);
   }
 
   if (method === 'PUT') {
-    const {title,description,price,images,category,properties,_id} = req.body;
-    await Product.updateOne({_id}, {title,description,price,images,category,properties});
-    res.json(true);
+    const {name,parentCategory,properties,_id} = req.body;
+    const categoryDoc = await Category.updateOne({_id},{
+      name,
+      parent: parentCategory || undefined,
+      properties,
+    });
+    res.json(categoryDoc);
   }
 
   if (method === 'DELETE') {
-    if (req.query?.id) {
-      await Product.deleteOne({_id:req.query?.id});
-      res.json(true);
-    }
+    const {_id} = req.query;
+    await Category.deleteOne({_id});
+    res.json('ok');
   }
 }
