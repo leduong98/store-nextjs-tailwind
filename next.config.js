@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  basePath: '/nextjs-e-commerce-fullstack-mongo-tallwinds',
-  assetPrefix: '/nextjs-e-commerce-fullstack-mongo-tallwinds/'
+  basePath: '/leduong98.github.io',
+  assetPrefix: '/leduong98.github.io/'
 }
 
 module.exports = nextConfig
