@@ -6,7 +6,7 @@ import clientPromise from "lib/mongodb";
 const adminEmails = ['leduong1998st@gmail.com'];
 
 export const authOptions = {
-  secret: "123",
+  secret: process.env.NEXT_PUBLIC_SECRET,
   providers: [
     GoogleProvider({
       clientId: "67173183807-tgunv0hu74bpd25qj7l4uog3ejt9kf88.apps.googleusercontent.com",
@@ -32,7 +32,6 @@ export async function isAdminRequest(req,res) {
   // if (!adminEmails.includes(session?.user?.email)) {
   //   res.status(401);
   //   res.end();
-  //1231
   //   throw 'not an admin';
   // }
 }
