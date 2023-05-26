@@ -5,6 +5,7 @@ import mime from 'mime-types';
 import {mongooseConnect} from "lib/mongoose";
 import {isAdminRequest} from "pages/api/auth/[...nextauth]";
 const bucketName = 'dawid-next-ecommerce';
+import { storage } from '/lib/firebase';
 
 export default async function handle(req,res) {
   await mongooseConnect();
@@ -17,26 +18,16 @@ export default async function handle(req,res) {
       resolve({fields,files});
     });
   });
-  const client = new S3Client({
-    region: 'us-east-1',
-    credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY,
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-    },
-  });
+
   const links = [];
   for (const file of files.file) {
+    const storageRef = storage.ref();
     const ext = file.originalFilename.split('.').pop();
     const newFilename = Date.now() + '.' + ext;
-    await client.send(new PutObjectCommand({
-      Bucket: bucketName,
-      Key: newFilename,
-      Body: fs.readFileSync(file.path),
-      ACL: 'public-read',
-      ContentType: mime.lookup(file.path),
-    }));
-    const link = `https://${bucketName}.s3.amazonaws.com/${newFilename}`;
-    links.push(link);
+    const fileRef = storageRef.child(newFilename);
+    const snapshot = await fileRef.put(file.data);
+    const downloadURL = await snapshot.ref.getDownloadURL();
+    links.push(downloadURL);
   }
   return res.json({links});
 }
