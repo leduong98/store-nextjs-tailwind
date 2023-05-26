@@ -32,6 +32,7 @@ export async function isAdminRequest(req,res) {
   // if (!adminEmails.includes(session?.user?.email)) {
   //   res.status(401);
   //   res.end();
+  //1231
   //   throw 'not an admin';
   // }
 }
